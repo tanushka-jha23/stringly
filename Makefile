@@ -20,11 +20,12 @@ $(main): $(obj) main.c $(headers)
 	gcc main.c $(obj) -o $(main)
 
 test: $(exe_tests) tests/orange_juice.h
-	@for x in $(exe_tests); do \
-		./$$x; \
-	done
+	$(foreach x,$(exe_tests),./$(x);)
 
 debug/%: tests/$(basename %).c $(obj)
+	gcc $< $(obj) -o $@
+
+debug/%.exe: tests/$(basename %).c $(obj)
 	gcc $< $(obj) -o $@
 
 obj/%.o: src/%.c

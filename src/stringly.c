@@ -1,6 +1,5 @@
-#include "../include/stringly.h"//function to convert any string into struct String
+#include "../include/stringly.h"
 
-///string constructor from another string
 String* string_from(char* c) {
     String* str = malloc(sizeof(String));
     int len = strlen(c);
@@ -10,7 +9,7 @@ String* string_from(char* c) {
 
     return str;
 }
-///empty string constructor
+
 String* string_new() {
     String* str = malloc(sizeof(String));
     char* c = malloc(sizeof(char));
@@ -28,102 +27,112 @@ String* string_with_capacity(int capacity) {
 
     return str;
 }
-///free memory of string
+
 void string_destroy(String* s) {
     free(s->data);
     free(s);
 }
 
-///function to print the value of string
-void string_print(char* c) {
-    String* s = string_from(c);
-    for(int i=0; i<s->len; i++) {
-        printf("%c", s->data[i]);
+void string_print(char* c, int n) {
+    for(int i=0; i<n; i++) {
+        printf("%c", c[i]);
     }
 }
 
-///function that returns length of a string
 int string_length(String* s) {
     return s->len;
 }
 
-///function that returns value of a string
 char* string_value(String* s) {
     return s->data;
 }
 
-///function that takes two strings and returns their concatenated string
-String* string_concat(String* s1, String* s2) {
-    String* s = string_with_capacity(s1->len + s2->len);
-    int i = 0;
+void string_concat_from_parts(String* s, String* s1, String* s2) {
     memcpy(s->data, s1->data, s1->len);
     memcpy(s->data+s1->len, s2->data, s2->len);
+}
+
+
+String* string_concat(String* s1, String* s2) {
+    String* s = string_with_capacity(s1->len + s2->len);
+    string_concat_from_parts(s, s1, s2);
+    string_destroy(s1);
+    string_destroy(s2);
 
     return s;
 }
 
-///trims the trailing spaces from beginning and end of string
-int string_trim(String* s) {
-    int i = 0;
-    while(s->data[i] == ' ') {
-        i++;
-    }
-    int j = s->len - 1;
-    while(s->data[j] == ' ') {
-        j--;
-    }
-    char* c = malloc(j-i+1);
-    memcpy(c, s->data+i, j-i+1);
+void string_push_cstr(String* s, char* str, int strlen) {
+    char* c = malloc(s->len+strlen);
+    memcpy(c, s->data, s->len);
+    memcpy(c+s->len, str, strlen);
     free(s->data);
-    s->len = j-i+1;
     s->data = c;
-
-    return j-i+1;
+    s->len += strlen;
 }
 
-///function to trim all the trailing spaces from beginning of string
-int string_trim_left(String* s) {
-    int i = 0;
-    while(s->data[i] == ' ') {
-        i++;
-    }
-    char* c = malloc(s->len-i);
-    memcpy(c, s->data+i, s->len);
-    free(s->data);
-    s->len = s->len-i;
-    s->data = c;
-
-    return s->len;
+StringSlice string_slice(String* s, int start, int stop) {
+    StringSlice c;
+    c.len = stop-start+1;
+    c.ptr = s->data+start;
+    return c;
 }
 
-///function to trim all the trailing spaces from the end of string
-int string_trim_right(String* s) {
-    int i = s->len - 1;
-    while(s->data[i] == ' ') {
-        i--;
+int string_split_count(String* s, char* delimiter) {
+    int count = 0;
+    for(int i=0; i < s->len; i++) {
+        if((i==s->len-1 || i==0) && s->data[i] == *delimiter) {
+            continue;
+        }
+        else if(s->data[i] == *delimiter) {
+            count++;
+        }
     }
-    char* c = malloc(i+1);
-    memcpy(c, s->data, i+1);
-    free(s->data);
-    s->len = i+1;
-    s->data = c;
-
-    return s->len;
+    return count+1;
 }
 
+void string_split(String* s, char* delimiter, StringSlice* out) {
+    int start = 0;
+    int i=0;
+    int j=0;
+    int len = string_split_count(s, delimiter);
+    for(i = 0; i < len; i++) {
+        for(j = start; j < s->len; j++) {
+            if(s->data[j] == *delimiter) {
+                break;
+            }
+        }
+        out[i] = string_slice(s, start, j-1);
+        start = j+1;
+    }
+}
 
+void string_join(String* s, char** c, int len, char* v){
+    for(int i=0; i < len; i++) {
+        string_push_cstr(s, c[i], strlen(c[i]));
+        string_push_cstr(s, v, strlen(v));
+    }
+}
 
+void string_swapcase(String* s) {
+    for(int i=0; i < s->len; i++) {
+        if(char_is_uppercase(s->data[i])) {
+            s->data[i] = char_lowercase(s->data[i]);
+        } else if(char_is_lowercase(s->data[i])) {
+            s->data[i] = char_uppercase(s->data[i]);
+        }
+    }
+}
 
+int string_is_numeric(String* s) {
+    int is_digit = 1;
 
-
-
-
-
-
-
-
-
-
-
-
+    for(int i=0; i < s->len; i++){
+        int v = (int)s->data[i];
+        if(v < 47 || v > 58)  {
+            is_digit = 0;
+        }
+    }
+    return is_digit;
+}
 
