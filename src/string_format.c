@@ -4,7 +4,7 @@ void format_int(String* s, va_list args) {
     int x = va_arg(args, int);
     int xlen = digits(x);
     char xstr[xlen];
-for(int i = 0; i < xlen; i++) {
+    for(int i = 0; i < xlen; i++) {
         xstr[xlen-i-1] = (x%10)+48;
         x /= 10;
     }

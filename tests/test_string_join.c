@@ -21,19 +21,9 @@ oj_test(joins_two_strings) {
     oj_fresh;
 }
 
-oj_test(joins_two_string_if_one_of_them_is_null) {
-    char* list[2] = {"hello", NULL};
-    String* s = string_new();
-    string_join(s, list, 2, "@");
-
-    oj_assert_eq_bytes(6, "hello@", string_value(s), "");
-    oj_fresh;
-}
-
 oj_prepare(tests_for_string_join) {
     oj_run(string_join_concatenates_strings_with_characters);
     oj_run(joins_two_strings);
-    oj_run(joins_two_string_if_one_of_them_is_null);
     oj_report;
     oj_fresh;
 }

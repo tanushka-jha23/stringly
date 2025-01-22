@@ -15,7 +15,6 @@ typedef struct stringslice {
     int len;
 }StringSlice;
 
-int str_len(char* c);
 String* string_from(char* c);
 String* string_new();
 String* string_with_capacity(int capacity);

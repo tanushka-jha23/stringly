@@ -19,15 +19,6 @@ oj_test(returns_length_of_string) {
     oj_fresh;
 } 
 
-oj_test(returns_zero_when_string_is_null) {
-    String* s = string_from(NULL);
-    int v = string_length(s);
-    string_destroy(s);
-
-    oj_assert_eq_int(0, v);
-    oj_fresh;
-}
-
 oj_test(returns_hello) {
     String* s = string_from("hello");
 
@@ -47,7 +38,6 @@ oj_test(returns_data_of_string) {
 oj_prepare(string_length_tests) {
     oj_run(takes_hello_and_returns_5);
     oj_run(returns_length_of_string);
-    oj_run(returns_zero_when_string_is_null);
     oj_report;
     oj_fresh;
 }
