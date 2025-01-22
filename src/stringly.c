@@ -1,8 +1,15 @@
 #include "../include/stringly.h"
 
+int str_len(char* c) {
+    if(c == NULL) {
+        return 0;
+    }
+    return strlen(c);
+}
+
 String* string_from(char* c) {
     String* str = malloc(sizeof(String));
-    int len = strlen(c);
+    int len = str_len(c);
     str->data = malloc(len);
     memcpy(str->data, c, len);
     str->len = len;
@@ -109,8 +116,8 @@ void string_split(String* s, char* delimiter, StringSlice* out) {
 
 void string_join(String* s, char** c, int len, char* v){
     for(int i=0; i < len; i++) {
-        string_push_cstr(s, c[i], strlen(c[i]));
-        string_push_cstr(s, v, strlen(v));
+        string_push_cstr(s, c[i], str_len(c[i]));
+        string_push_cstr(s, v, str_len(v));
     }
 }
 
