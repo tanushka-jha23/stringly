@@ -1,39 +1,52 @@
-headers := $(wildcard include/*.h)
-src := $(wildcard src/*.c)
-obj := $(addprefix obj/,$(notdir $(src:.c=.o)))
-tests := $(wildcard tests/*.c)
-exe_tests := $(foreach test,$(tests),$(addprefix debug/,$(notdir $(basename $(test)))))
+src := $(notdir $(wildcard src/*.c))
+obj := $(addprefix build/obj/,$(src:.c=.o))
+headers := $(wildcard headers/*.h)
 
-main :=
-ifeq ($(OS),Windows_NT)
-	main += main.exe
-	exe_tests := $(foreach test,$(tests),$(addprefix debug/,$(notdir $(basename $(test))).exe))
-else
-	main += main
-endif
+dependencies := $(addprefix build/dependencies/,$(src:.c=.d))
 
-.PHONY: all run clean test
+tests := $(addprefix build/,$(basename $(wildcard tests/test*.c)))
 
-all: $(main)
+examples := $(addprefix build/,$(basename $(wildcard examples/*.c)))
 
-$(main): $(obj) main.c $(headers)
-	gcc main.c $(obj) -o $(main)
+directories := build build/dependencies build/examples build/obj build/tests src tests headers examples docs
 
-test: $(exe_tests) tests/orange_juice.h
-	$(foreach x,$(exe_tests),./$(x);)
+.PHONY: all clean run test setup
 
-debug/%: tests/$(basename %).c $(obj)
-	gcc $< $(obj) -o $@
+all: setup build/main $(examples)
 
-debug/%.exe: tests/$(basename %).c $(obj)
-	gcc $< $(obj) -o $@
+setup: $(directories)
 
-obj/%.o: src/%.c
-	gcc $< -o $@ -c
+$(directories):
+	mkdir -p $@
 
-run: $(main)
-	@./$(main)
+build/main: $(obj) main.c
+	@gcc main.c $(obj) -o build/main
+
+build/dependencies/%.d: src/%.c
+	@gcc -MM -MT build/obj/$*.o $< -MF $@
+
+build/obj/%.o: src/%.c
+	@gcc $< -o $@ -c
+
+build/examples/%: examples/%.c $(obj) tests/orange_juice.h $(headers)
+	@gcc $< $(obj) -o $@
+
+build/tests/%: tests/%.c $(obj) tests/orange_juice.h $(headers)
+	@gcc $< $(obj) -o $@
+
+test: setup $(tests)
+	@$(foreach x,$(tests),./$(x);)
+
+test_%: setup build/tests/test_%
+	@./build/tests/$@
 
 clean:
-	@rm -f $(foreach x,$(obj),"$(x)") "$(main)"
-	@echo "cleaned."
+	@rm -f build/obj/*.o build/tests/* build/examples/* build/main* build/dependencies/*
+	@rm -rf build
+	@echo cleaned.
+
+run: setup build/main
+	@echo
+	@./build/main
+
+-include $(dependencies)
