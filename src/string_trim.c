@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 int string_trim(String* s) {
     int i = string_trim_left(s);

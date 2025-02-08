@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 void format_int(String* s, va_list args) {
     int x = va_arg(args, int);

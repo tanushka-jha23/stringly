@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(takes_2_strings_and_return_concatenated_string) {

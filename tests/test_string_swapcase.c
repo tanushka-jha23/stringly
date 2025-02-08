@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(string_swap_converts_the_string_by_swapping_characters) {

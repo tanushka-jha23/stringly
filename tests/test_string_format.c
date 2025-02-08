@@ -1,5 +1,5 @@
 #include "orange_juice.h"
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 oj_test(formats_integer_into_string) {
     String* s = string_new();

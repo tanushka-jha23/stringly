@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 String* string_from(char* c) {
     String* str = malloc(sizeof(String));

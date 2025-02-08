@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(takes_string_with_spaces_and_returns_true) {

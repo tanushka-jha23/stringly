@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 int char_is_uppercase(char c) {
     return c <= 'Z' && c >= 'A';

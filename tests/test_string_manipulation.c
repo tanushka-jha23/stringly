@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(takes_string_and_returns_true_if_string_is_all_numeric) {

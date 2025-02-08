@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(string_split_count_returns_the_number_of_string) {

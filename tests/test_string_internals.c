@@ -1,5 +1,5 @@
 #include "orange_juice.h"
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 
 oj_test(takes_hello_and_returns_5) {
     String* s = string_from("hello");

@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(string_slice_takes_Hello_world_and_returns_a_sliced_string) {

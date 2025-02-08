@@ -1,4 +1,4 @@
-#include "../include/miniutils.h"
+#include "../headers/miniutils.h"
 
 int digits(int x) {
     int digits = 0;

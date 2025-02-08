@@ -1,4 +1,4 @@
-#include "../include/stringly.h"
+#include "../headers/stringly.h"
 #include "orange_juice.h"
 
 oj_test(char_is_uppercase_returns_false_if_character_is_not_alphabet) {

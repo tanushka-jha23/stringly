@@ -1,5 +1,5 @@
 #include "orange_juice.h"
-#include "../include/miniutils.h"
+#include "../headers/miniutils.h"
 
 oj_test(miniutils_returns_5_for_42069) {
     oj_assert_eq_int(5, digits(42069));
